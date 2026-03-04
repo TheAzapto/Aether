@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether — 3D Physics Engine Built From Scratch in Python</title>
+  <meta name="description" content="Aether is a lightweight 3D physics engine written in pure Python. Featuring rigid body dynamics, SAT collision detection, force generators, and GPU-accelerated OpenGL rendering.">
+  <meta name="keywords" content="physics engine, python, 3D, rigid body, collision detection, SAT, OpenGL">
+  <meta name="author" content="TheAzapto">
+  <meta property="og:title" content="Aether — 3D Physics Engine">
+  <meta property="og:description" content="A lightweight 3D physics engine built from scratch in Python with OpenGL rendering.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">⚛</div>
+        <span class="nav-logo-text">Aether</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#code">Code</a></li>
+        <li><a href="#getstarted">Get Started</a></li>
+        <li><a href="https://github.com/TheAzapto/Aether" target="_blank" class="nav-cta">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a></li>
+      </ul>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <canvas class="hero-canvas" id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Open-Source Physics Engine
+      </div>
+      <h1><span class="gradient-text">Aether</span></h1>
+      <p class="hero-subtitle">
+        A lightweight 3D physics engine built from scratch in Python — featuring rigid body dynamics,
+        SAT collision detection, and GPU-accelerated OpenGL rendering.
+      </p>
+      <div class="hero-actions">
+        <a href="#demo" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Live Demo
+        </a>
+        <a href="https://github.com/TheAzapto/Aether" target="_blank" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          View Source
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="7">0</div>
+          <div class="hero-stat-label">Core Modules</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="4">0</div>
+          <div class="hero-stat-label">Shape Primitives</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="6">0</div>
+          <div class="hero-stat-label">Collision Algorithms</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="3">0</div>
+          <div class="hero-stat-label">Force Generators</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-mouse"></div>
+      <span class="hero-scroll-text">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       LIVE DEMO
+       ═══════════════════════════════════════════════════════ -->
+  <section class="demo-section" id="demo">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Interactive</div>
+        <h2 class="section-title">Live Physics <span class="gradient-text">Demo</span></h2>
+        <p class="section-subtitle">
+          A real-time 2D physics simulation mirroring Aether's core loop — gravity, collisions, and boundary detection. Click anywhere to spawn bodies.
+        </p>
+      </div>
+
+      <div class="demo-wrapper reveal reveal-delay-2">
+        <div class="demo-toolbar">
+          <div class="demo-toolbar-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="demo-toolbar-title">aether_simulation.py</span>
+          <div class="demo-toolbar-controls">
+            <button class="demo-btn" id="demo-reset">↻ Reset</button>
+            <button class="demo-btn" id="demo-pause">⏸ Pause</button>
+            <button class="demo-btn" id="demo-gravity">⬇ Gravity</button>
+          </div>
+        </div>
+        <canvas class="demo-canvas" id="demo-canvas"></canvas>
+        <div class="demo-info">
+          <div class="demo-info-stat">
+            <span class="dot"></span>
+            Running at <strong id="demo-fps">60</strong> FPS
+          </div>
+          <div class="demo-info-stat">
+            Bodies: <strong id="demo-body-count">20</strong>
+          </div>
+          <div class="demo-info-stat">
+            Click canvas to add bodies
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ARCHITECTURE
+       ═══════════════════════════════════════════════════════ -->
+  <section class="arch-section" id="architecture">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Modular Design</div>
+        <h2 class="section-title">Engine <span class="gradient-text">Architecture</span></h2>
+        <p class="section-subtitle">
+          Seven focused modules, each handling a single responsibility — from linear algebra primitives to GPU-accelerated rendering.
+        </p>
+      </div>
+
+      <div class="arch-grid">
+        <!-- Vector3 -->
+        <div class="arch-card reveal reveal-delay-1">
+          <div class="arch-card-icon">📐</div>
+          <h3 class="arch-card-title">Vector3</h3>
+          <p class="arch-card-desc">
+            Full 3D vector with add, subtract, scalar multiply, dot product, cross product,
+            normalization, and epsilon-aware comparison.
+          </p>
+          <div class="arch-card-tags">
+            <span class="arch-card-tag">dot()</span>
+            <span class="arch-card-tag">cross()</span>
+            <span class="arch-card-tag">normalized()</span>
+            <span class="arch-card-tag">length</span>
+          </div>
+        </div>
+
+        <!-- Matrix4 -->
+        <div class="arch-card reveal reveal-delay-2">
+          <div class="arch-card-icon">🧮</div>
+          <h3 class="arch-card-title">Matrix4</h3>
+          <p class="arch-card-desc">
+            4×4 column-major matrix with perspective & orthographic projections, look-at view,
+            translation, rotation, and scale transforms.
+          </p>
+          <div class="arch-card-tags">
+            <span class="arch-card-tag">perspective()</span>
+            <span class="arch-card-tag">look_at()</span>
+            <span class="arch-card-tag">rotation_xyz()</span>
+          </div>
+        </div>
+
+        <!-- RigidBody -->
+        <div class="arch-card reveal reveal-delay-3">
+          <div class="arch-card-icon">🧊</div>
+          <h3 class="arch-card-title">RigidBody</h3>
+          <p class="arch-card-desc">
+            State container for position, velocity, inverse mass, and collision shape.
+            Supports both dynamic bodies and static anchors (mass&nbsp;=&nbsp;0).
+          </p>
+          <div class="arch-card-tags">
+            <span class="arch-card-tag">position</span>
+            <span class="arch-card-tag">velocity</span>
+            <span class="arch-card-tag">inv_mass</span>
+            <span class="arch-card-tag">restitution</span>
+          </div>
+        </div>
+
+        <!-- World -->
+        <div class="arch-card reveal reveal-delay-1">
+          <div class="arch-card-icon">🌍</div>
+          <h3 class="arch-card-title">World</h3>
+          <p class="arch-card-desc">
+            The simulation controller — manages bodies, applies force generators,
+            runs fixed-timestep sub-stepping at 2ms intervals, and resolves collisions
+            each step.
+          </p>
+          <div class="arch-card-tags">
+            <span class="arch-card-tag">step()</span>
+            <span class="arch-card-tag">add_force()</span>
+            <span class="arch-card-tag">sub-stepping</span>
+          </div>
+        </div>
+
+        <!-- Collision -->
+        <div class="arch-card reveal reveal-delay-2">
+          <div class="arch-card-icon">💥</div>
+          <h3 class="arch-card-title">Collision</h3>
+          <p class="arch-card-desc">
+            Dispatches shape-pair collision detection: Circle↔Circle, Circle↔AABB,
+            AABB↔AABB, and SAT-based Polygon detection with contact normals & penetration depth.
+          </p>
+          <div class="arch-card-tags">
+            <span class="arch-card-tag">SAT</span>
+            <span class="arch-card-tag">Minkowski</span>
+            <span class="arch-card-tag">CollisionResult</span>
+          </div>
+        </div>
+
+        <!-- Renderer -->
+        <div class="arch-card reveal reveal-delay-3">
+          <div class="arch-card-icon">🎨</div>
+          <h3 class="arch-card-title">Renderer & Camera</h3>
+          <p class="arch-card-desc">
+            Modern OpenGL 3.3+ core-profile renderer with GLSL shaders, VBOs,
+            and a fixed-position camera system with view and projection matrices.
+          </p>
+          <div class="arch-card-tags">
+            <span class="arch-card-tag">GLSL 330</span>
+            <span class="arch-card-tag">VBO</span>
+            <span class="arch-card-tag">MVP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FEATURES
+       ═══════════════════════════════════════════════════════ -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Capabilities</div>
+        <h2 class="section-title">Engine <span class="gradient-text-warm">Features</span></h2>
+        <p class="section-subtitle">
+          Everything you need for a physics simulation, built from the ground up with no external physics libraries.
+        </p>
+      </div>
+
+      <div class="features-list">
+        <div class="feature-item reveal reveal-delay-1">
+          <div class="feature-icon">🔺</div>
+          <div class="feature-content">
+            <h3>4 Shape Primitives</h3>
+            <p>Circle, AABB (rectangle), convex Polygon, and Line — each with area calculation, bounding radius, and point containment checks.</p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-2">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-content">
+            <h3>SAT Collision Detection</h3>
+            <p>Separating Axis Theorem for convex polygon pairs, Minkowski-sum approach for Circle↔AABB, and optimized circle-to-circle distance checks.</p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-1">
+          <div class="feature-icon">⏱️</div>
+          <div class="feature-content">
+            <h3>Fixed-Timestep Sub-Stepping</h3>
+            <p>Internal physics runs at 2ms steps regardless of frame rate, preventing tunneling artifacts and ensuring deterministic simulation.</p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-2">
+          <div class="feature-icon">🌊</div>
+          <div class="feature-content">
+            <h3>Force Generators</h3>
+            <p>Pluggable force system with Gravity (F&nbsp;=&nbsp;mg), Drag (-kv), and Friction (μN opposing motion) — easily extend with custom generators.</p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-1">
+          <div class="feature-icon">🖥️</div>
+          <div class="feature-content">
+            <h3>GPU Rendering (OpenGL 3.3+)</h3>
+            <p>Modern core-profile pipeline with vertex/fragment shaders, dynamic VBOs, and per-body MVP matrix transforms — all vertex processing on the GPU.</p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-2">
+          <div class="feature-icon">📷</div>
+          <div class="feature-content">
+            <h3>3D Camera System</h3>
+            <p>Perspective camera with configurable FOV, aspect ratio, near/far planes, and cached view-projection matrices for efficient rendering.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CODE SHOWCASE
+       ═══════════════════════════════════════════════════════ -->
+  <section class="code-section" id="code">
+    <div class="container">
+      <div class="code-wrapper">
+        <div class="code-description reveal">
+          <div class="section-label" style="justify-content: flex-start;">Code</div>
+          <h3>Intuitive <span class="gradient-text">API</span></h3>
+          <p>
+            Set up a full physics simulation in just a few lines. Create bodies,
+            add forces, step the world — Aether handles the math, collisions,
+            and rendering for you.
+          </p>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <div class="code-tabs">
+            <button class="code-tab active" data-panel="code-setup">simulation.py</button>
+            <button class="code-tab" data-panel="code-bodies">bodies.py</button>
+            <button class="code-tab" data-panel="code-forces">forces.py</button>
+          </div>
+
+          <div class="code-block">
+            <!-- Panel 1: Setup -->
+            <div class="code-panel active" id="code-setup">
+<pre><code><span class="code-comment"># Create the physics world</span>
+<span class="code-keyword">from</span> main <span class="code-keyword">import</span> <span class="code-class">World</span>, <span class="code-class">RigidBody</span>, <span class="code-class">Gravity</span>
+<span class="code-keyword">from</span> Vector <span class="code-keyword">import</span> <span class="code-class">Vector3</span>
+<span class="code-keyword">from</span> Primitives <span class="code-keyword">import</span> <span class="code-class">Circle</span>
+
+<span class="code-comment"># World at ~60 FPS delta</span>
+world = <span class="code-class">World</span>(<span class="code-param">delta</span>=<span class="code-number">0.016</span>)
+
+<span class="code-comment"># Add a bouncing ball</span>
+ball = <span class="code-class">RigidBody</span>(
+    <span class="code-param">p</span>=<span class="code-class">Vector3</span>(<span class="code-number">250</span>, <span class="code-number">300</span>),
+    <span class="code-param">v</span>=<span class="code-class">Vector3</span>(<span class="code-number">50</span>, <span class="code-number">0</span>),
+    <span class="code-param">shape</span>=<span class="code-class">Circle</span>(<span class="code-number">10</span>)
+)
+world.<span class="code-function">add</span>(ball)
+world.<span class="code-function">add_force</span>(<span class="code-class">Gravity</span>(<span class="code-number">-9.81</span>))
+
+<span class="code-comment"># Run the simulation loop</span>
+<span class="code-keyword">while</span> <span class="code-keyword">True</span>:
+    world.<span class="code-function">step</span>()</code></pre>
+            </div>
+
+            <!-- Panel 2: Bodies -->
+            <div class="code-panel" id="code-bodies">
+<pre><code><span class="code-comment"># Different body types</span>
+<span class="code-keyword">from</span> Primitives <span class="code-keyword">import</span> <span class="code-class">Circle</span>, <span class="code-class">AABB</span>, <span class="code-class">Polygon</span>
+
+<span class="code-comment"># Dynamic circle (mass = 1.0)</span>
+ball = <span class="code-class">RigidBody</span>(
+    <span class="code-param">p</span>=<span class="code-class">Vector3</span>(<span class="code-number">100</span>, <span class="code-number">200</span>),
+    <span class="code-param">shape</span>=<span class="code-class">Circle</span>(<span class="code-param">radius</span>=<span class="code-number">5</span>)
+)
+
+<span class="code-comment"># Static platform (mass = 0)</span>
+platform = <span class="code-class">RigidBody</span>(
+    <span class="code-param">p</span>=<span class="code-class">Vector3</span>(<span class="code-number">250</span>, <span class="code-number">50</span>),
+    <span class="code-param">m</span>=<span class="code-number">0</span>,
+    <span class="code-param">shape</span>=<span class="code-class">AABB</span>(<span class="code-number">100</span>, <span class="code-number">10</span>)
+)
+
+<span class="code-comment"># Regular hexagon</span>
+hex = <span class="code-class">Polygon</span>.<span class="code-function">create_regular</span>(
+    <span class="code-param">sides</span>=<span class="code-number">6</span>,
+    <span class="code-param">radius</span>=<span class="code-number">15</span>
+)</code></pre>
+            </div>
+
+            <!-- Panel 3: Forces -->
+            <div class="code-panel" id="code-forces">
+<pre><code><span class="code-comment"># Built-in force generators</span>
+<span class="code-keyword">from</span> main <span class="code-keyword">import</span> <span class="code-class">Gravity</span>, <span class="code-class">Drag</span>, <span class="code-class">Friction</span>
+
+<span class="code-comment"># Pull bodies downward: F = mg</span>
+gravity = <span class="code-class">Gravity</span>(<span class="code-param">g</span>=<span class="code-number">-9.81</span>)
+
+<span class="code-comment"># Air resistance: F = -kv</span>
+drag = <span class="code-class">Drag</span>(<span class="code-param">k</span>=<span class="code-number">0.05</span>)
+
+<span class="code-comment"># Surface friction: F = -μN</span>
+friction = <span class="code-class">Friction</span>(
+    <span class="code-param">mu</span>=<span class="code-number">0.2</span>,
+    <span class="code-param">gravity</span>=<span class="code-number">9.81</span>
+)
+
+<span class="code-comment"># Add all at once</span>
+world.<span class="code-function">add_force</span>([gravity, drag, friction])</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       GETTING STARTED
+       ═══════════════════════════════════════════════════════ -->
+  <section class="getstarted-section" id="getstarted">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Quick Start</div>
+        <h2 class="section-title">Get <span class="gradient-text">Started</span></h2>
+        <p class="section-subtitle">
+          Three steps to start simulating physics with Aether.
+        </p>
+      </div>
+
+      <div class="getstarted-grid">
+        <div class="step-card reveal reveal-delay-1">
+          <div class="step-number">1</div>
+          <h3>Clone the Repository</h3>
+          <p>Grab the source code from GitHub and enter the project directory.</p>
+          <div class="step-code">
+            <div>$ git clone https://github.com/TheAzapto/Aether.git</div>
+            <div>$ cd Aether</div>
+          </div>
+        </div>
+
+        <div class="step-card reveal reveal-delay-2">
+          <div class="step-number">2</div>
+          <h3>Install Dependencies</h3>
+          <p>Set up a virtual environment and install the required Python packages.</p>
+          <div class="step-code">
+            <div>$ python -m venv .venv</div>
+            <div>$ pip install -r requirements.txt</div>
+          </div>
+        </div>
+
+        <div class="step-card reveal reveal-delay-3">
+          <div class="step-number">3</div>
+          <h3>Run the Simulation</h3>
+          <p>Launch the demo and watch 50 bodies interact with gravity, drag, and collisions.</p>
+          <div class="step-code">
+            <div>$ python app.py</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-left">
+        <span class="footer-logo">⚛ Aether</span>
+        <span class="footer-copy">Built from scratch in Python</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/TheAzapto/Aether" target="_blank">GitHub</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#features">Features</a>
+        <a href="#getstarted">Get Started</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
